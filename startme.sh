@@ -4,5 +4,5 @@
 service httpd start
 service httpd status
 
-#Starts MySql 
+#Starts MySQL
 /etc/rc.d/init.d/mysqld start
