@@ -1,0 +1,53 @@
+Setup involves setting up LAMP (Linux, Apache, MySQL, Python) platform and Test setup.
+
+Linux installation and setup:
+- Fedora 15 is installed on the machine
+- /home/me is the home directory
+- Add devi.com entry to /etc/hosts file (Both ipv4, ipv6 lines), to access the local host as devi.com
+
+Apache Installation and setup:
+- httpd is the name of apache server. This is installed with Linux installation
+- Fedora comes with SELinux security permission. All files will have dot(‘.’) at the end of their file permission. 
+  This creates problem resulting in directory or index forbidden error.
+  Set SELinux=DISABLED by editing /etc/selinux/config file and then rebooting the system. This will make sure all the
+  new files created will not have dot at the end file permission.
+- Remove dot for existing files using Setfattr –x Security.Selinux <file> or file/*. This will apply to /home, /home/me,
+  /home/me/RESTservices, /home/me/RESTservices/*, /var, /var/www, /var/www/cgibin, /var/www/html, /etc, /etc/*
+- All files accessed (in directory hierarchy) by Apache should have Read and Execute permission for Owner, Group and 
+  Other users.
+- Check and set Read and Execute file permission (if not already set). This will apply to /home,/home/me, 
+  /home/me/RESTservices,/home/me/RESTservices/*. /var, /var/www,/var/www/cgibin
+- Edit /etc/httpd/conf/httpd.conf is the config file. Make a copy of this file and add ExecCGI,FollowSymlinks.
+- Setup logical link to access REST service from browser (service.py). 
+- Under /var/www/cgibin,create a link to service directory. ln –s /home/me/RESTservices REST.
+- service httpd start will start the Apache web server.
+- service httpd status will show the httpd processes running
+- Test your server devi.com by running a sample URI request devi.com/cgibin/REST/sample.html 
+- service httpd stop will stop the Apache Web server
+- /etc/log/httpd/error_log (tail to look at recent entries) can be checked for httpd errors that occur. 
+- /etc/log/httpd/Access_log can be checked for access errors by httpd
+
+MySQL setup:
+- mysql and server related files are installed using system tools (add or remove programs)
+- rpm –q mysql shows up mysql installation
+- Download mysql.sampledatabase
+- Mysqldb module to be installed. yum install pythonlevel; yum install mysqldevel
+- /etc/rc.d/init/d/mysqld start will start the mysql daemon process
+- /etc/rc.d/init/d/mysqld stop will stop mysql daemon
+- mysql –u root to connect to mysql ; show databases ; use test will open test database
+- /usr/bin/mysqladmin –u root shutdown to shutdown mysql processes
+- Test the setup by connecting to mysql (mysql –u root)
+
+Python setup:
+- /usr/bin/python and /usr/lib is where python is installed. Project uses python 2.7.
+- Python files(.py) should have #!/usr/bin/python as the first line in the file
+- Install python interface for mysql (yum install mysqlpython)
+
+Test setup:
+- Create user (xyz). Grant all privileges
+- Create test database.
+- Create tables categories and products
+- Insert rows into tables
+- devi.com/cgibin/REST/service.py will run the service
+
+Before running any service run the shell script
